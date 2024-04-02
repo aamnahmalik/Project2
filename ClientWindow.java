@@ -93,7 +93,7 @@ public class ClientWindow implements ActionListener {
 		window.setResizable(false);
 	}
 
-	private void resetTimer(int duration) {
+	public void resetTimer(int duration) {
         clock.cancel(); // Cancel the previous timer task
         timer.setText("TIMER");
         clock = new TimerCode(duration); // Create a new TimerTask with the new duration
@@ -107,7 +107,7 @@ public class ClientWindow implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if ("Poll".equals(e.getActionCommand())) {
 			client.sendBuzz(); // Call the method when Poll button is clicked
-			resetTimer(10);
+			// resetTimer(10);
 		} else if ("Submit".equals(e.getActionCommand())) {
 			// Existing submit logic
 			String selectedOption = getSelectedOptionIndex();
