@@ -61,7 +61,12 @@ public class ClientHandler implements Runnable {
                         handleNext();
                     } else if ("Wrong".equals(feedback.trim())) {
                         //need to put in logic to have next queued player answer
-
+                        // udpThread.removeFirstClient();
+                        // receivedID = dis.readUTF();
+                        // handleBuzz();
+                    } else if ("Next".equals(feedback.trim())) { //for when timer runs out
+                        udpThread.removeClients();
+                        handleNext();
                     }
                 }
             }

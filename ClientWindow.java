@@ -93,6 +93,14 @@ public class ClientWindow implements ActionListener {
 		window.setResizable(false);
 	}
 
+	public void updateTimer(int remainingTime) {
+		timer.setText("TIMER: " + remainingTime + " seconds");
+		if (remainingTime < 6)
+			timer.setForeground(Color.RED);
+		else
+			timer.setForeground(Color.BLACK);
+	}
+
 	public void resetTimer(int duration) {
         clock.cancel(); // Cancel the previous timer task
         timer.setText("TIMER");
@@ -111,6 +119,7 @@ public class ClientWindow implements ActionListener {
 		} else if ("Submit".equals(e.getActionCommand())) {
 			// Existing submit logic
 			String selectedOption = getSelectedOptionIndex();
+			submit.setEnabled(false);
 			if (selectedOption != null && selectedOption.equals(answer)) {
 				updateScore(true);
 				client.sendAnswerFeedback("Correct");
@@ -189,6 +198,7 @@ public class ClientWindow implements ActionListener {
 	public void updateQuestion(String text) {
 		question.setText(text);
 		poll.setEnabled(true);
+		submit.setEnabled(true);
 		resetTimer(15);
 	}
 
