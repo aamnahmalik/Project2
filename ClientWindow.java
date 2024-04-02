@@ -26,6 +26,8 @@ public class ClientWindow implements ActionListener {
 	private TimerTask clock;
 	private String answer;
 	private Client client;
+	Timer t = new Timer();
+	private Boolean polled = false;
 
 	private JFrame window;
 
@@ -34,7 +36,7 @@ public class ClientWindow implements ActionListener {
 	// write setters and getters as you need
 
 	public ClientWindow(Client client) {
-		JOptionPane.showMessageDialog(window, "This is a trivia game");
+		JOptionPane.showMessageDialog(window, "Film & Entertainment Trivia");
 		this.client = client;
 		window = new JFrame("Trivia");
 		question = new JLabel("Q1. This is a sample question"); // represents the question
@@ -56,8 +58,8 @@ public class ClientWindow implements ActionListener {
 
 		timer = new JLabel("TIMER"); // represents the countdown shown on the window
 		timer.setBounds(250, 250, 100, 20);
-		clock = new TimerCode(30); // represents clocked task that should run after X seconds
-		Timer t = new Timer(); // event generator
+		clock = new TimerCode(15); // represents clocked task that should run after X seconds
+		// Timer t = new Timer(); // event generator
 		t.schedule(clock, 0, 1000); // clock is called every second
 		window.add(timer);
 
@@ -91,23 +93,35 @@ public class ClientWindow implements ActionListener {
 		window.setResizable(false);
 	}
 
+	private void resetTimer(int duration) {
+        clock.cancel(); // Cancel the previous timer task
+        timer.setText("TIMER");
+        clock = new TimerCode(duration); // Create a new TimerTask with the new duration
+        t.schedule(clock, 0, 1000); // Schedule the new task
+		polled = true;
+    }
+
 	// this method is called when you check/uncheck any radio button
 	// this method is called when you press either of the buttons- submit/poll
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if ("Poll".equals(e.getActionCommand())) {
 			client.sendBuzz(); // Call the method when Poll button is clicked
+			resetTimer(10);
 		} else if ("Submit".equals(e.getActionCommand())) {
 			// Existing submit logic
 			String selectedOption = getSelectedOptionIndex();
 			if (selectedOption != null && selectedOption.equals(answer)) {
 				updateScore(true);
-				client.sendAnswerFeedback("Next");
+				client.sendAnswerFeedback("Correct");
 				JOptionPane.showMessageDialog(window, "Correct Answer!");
 			} else {
 				updateScore(false);
-				client.sendAnswerFeedback("Next");
+				client.sendAnswerFeedback("Wrong");
 				JOptionPane.showMessageDialog(window, "Wrong Answer!");
+				poll.setEnabled(false);
+				submit.setEnabled(false);
+				clock.cancel();
 			}
 		}
 		
@@ -146,8 +160,15 @@ public class ClientWindow implements ActionListener {
 
 		@Override
 		public void run() {
-			if (duration < 0) {
+			if (duration <= 0) {
+				if (polled)
+				{
+					currentScore -= 20;
+				}
+				poll.setEnabled(false);
 				timer.setText("Timer expired");
+				currScore.setText(String.valueOf(currentScore));
+				client.sendAnswerFeedback("Next");
 				window.repaint();
 				this.cancel(); // cancel the timed task
 				return;
@@ -167,6 +188,8 @@ public class ClientWindow implements ActionListener {
 
 	public void updateQuestion(String text) {
 		question.setText(text);
+		poll.setEnabled(true);
+		resetTimer(15);
 	}
 
 	public void setOptions(String[] optionsText, String correctAnswer) {

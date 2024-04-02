@@ -65,7 +65,7 @@ public class Client {
 							int fileLength = dis.readInt();
 							System.out.println("file length " + fileLength);
 							if (fileLength > 0) {
-								System.out.println("Curr Question is happening22222");
+								System.out.println("Curr Question is happening");
 								byte[] content = new byte[fileLength];
 								dis.readFully(content, 0, fileLength);
 								String fileName = "clientQuestion.txt";

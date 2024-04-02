@@ -35,7 +35,7 @@ public class UDPThread implements Runnable {
         int i = 0;
         while(i < queue.size()) {
             String clientId = queue.poll();
-            System.out.println("in queue are this people" + clientId);
+            System.out.println("Queued: ClientID" + clientId);
             queue.add(clientId);
             i++;
         } 
@@ -44,6 +44,12 @@ public class UDPThread implements Runnable {
 
     public void removeClients() {
         while(!queue.isEmpty()) {
+            queue.poll();
+        }
+    }
+
+    public void removeFirstClient() {
+        if (!queue.isEmpty()) {
             queue.poll();
         }
     }
