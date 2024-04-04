@@ -55,6 +55,7 @@ public class Client {
 	                switch (response) {
 	                    case "ack":
 	                        clientWindow.enableOptions();
+							clientWindow.submit.setEnabled(true);
 							clientWindow.resetTimer(10);
 	                        System.out.println("I was first!");
 	                        break;

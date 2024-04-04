@@ -15,7 +15,7 @@ import javax.swing.JRadioButton;
 public class ClientWindow implements ActionListener {
 	private JButton poll;
 	private JLabel clientID;
-	private JButton submit;
+	public JButton submit;
 	private JRadioButton options[];
 	private ButtonGroup optionGroup;
 	private JLabel question;
@@ -206,7 +206,7 @@ public class ClientWindow implements ActionListener {
 	public void updateQuestion(String text) {
 		question.setText(text);
 		poll.setEnabled(true);
-		submit.setEnabled(true);
+		submit.setEnabled(false);
 		setTimer(15);
 	}
 
