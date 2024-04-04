@@ -56,7 +56,9 @@ public class Client {
 	                    case "ack":
 	                        clientWindow.enableOptions();
 							clientWindow.submit.setEnabled(true);
+							clientWindow.clock.cancel();
 							clientWindow.resetTimer(10);
+							clientWindow.polled = true;
 	                        System.out.println("I was first!");
 	                        break;
 	                    case "nack":
@@ -86,6 +88,14 @@ public class Client {
 						case "Time's up":
 							clientWindow.updateScore(false);
 							clientWindow.updateScore(false);
+							break;
+						case "End of game":
+							clientWindow.clock.cancel();
+							dos.writeInt(clientWindow.currentScore);
+							dos.writeUTF(CLIENT_ID + "'s score: " + clientWindow.currentScore);
+							
+							socket.close();
+							break;
 	                }
 	            }
 	        } catch (IOException e) {

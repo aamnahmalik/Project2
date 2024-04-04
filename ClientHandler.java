@@ -3,7 +3,9 @@ import java.net.Socket;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class ClientHandler implements Runnable {
@@ -18,6 +20,8 @@ public class ClientHandler implements Runnable {
     private BufferedReader in;
     private int clientId;
     private String correctAnswer;
+    private static Map<String, Integer> clientScores = new HashMap<>(); // Track client scores
+
 
     public ClientHandler(Socket socket, int clientId, UDPThread udpThread) {
         this.clientSocket = socket;
@@ -59,17 +63,19 @@ public class ClientHandler implements Runnable {
                         dos.writeUTF("Correct");
                         udpThread.removeClients();
                         System.out.println("sent the notification");
+                        incrementScore(receivedID); // Increment score for correct answer
                         handleNext();
                     } else if ("Wrong".equals(feedback.trim())) {
                         dos.writeUTF("Wrong");
                         udpThread.removeClients();
+                        decrementScore(receivedID); // Decrement score for correct answer
                         handleNext();
                     } else if ("Next".equals(feedback.trim())) { //for when timer runs out
                         udpThread.removeClients();
                         handleNext();
                     } else if ("Time's up".equals(feedback.trim())) {
                         dos.writeUTF("Time's up");
-                    }
+                    } 
                 }
             }
         } catch (IOException e) {
@@ -94,6 +100,11 @@ public class ClientHandler implements Runnable {
     private void handleNext() throws IOException {
         synchronized (ClientHandler.class) {
             currentQuestionIndex++;
+            if (currentQuestionIndex == 21) {
+                dos.writeUTF("End of game");
+                printScoresAndWinner();
+                return;
+            }
             findAnswer();
             for (ClientHandler handler : handlers) {
 
@@ -136,5 +147,24 @@ public class ClientHandler implements Runnable {
             dos.writeUTF("nack");
             dos.flush();
         }
+    }
+
+    private void incrementScore(String clientID) {
+        clientScores.put(clientID, clientScores.getOrDefault(clientID, 0) + 10);
+    }
+
+    private void decrementScore(String clientID) {
+        clientScores.put(clientID, clientScores.getOrDefault(clientID, 0) - 10);
+    }
+
+    // Print scores and announce winner
+    private void printScoresAndWinner() {
+        System.out.println("Scores:");
+        for (Map.Entry<String, Integer> entry : clientScores.entrySet()) {
+            System.out.println(entry.getKey() + ": " + entry.getValue());
+        }
+        // Find the winner
+        String winner = Collections.max(clientScores.entrySet(), Map.Entry.comparingByValue()).getKey();
+        System.out.println("Winner: " + winner);
     }
 }

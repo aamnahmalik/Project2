@@ -22,12 +22,12 @@ public class ClientWindow implements ActionListener {
 	private JLabel timer;
 	private JLabel score;
 	private JLabel currScore;
-	private int currentScore = 0;
-	private TimerTask clock;
+	public int currentScore = 0;
+	public TimerTask clock;
 	private String answer;
 	private Client client;
 	Timer t = new Timer();
-	private Boolean polled = false;
+	public Boolean polled = false;
 
 	private JFrame window;
 
@@ -41,7 +41,7 @@ public class ClientWindow implements ActionListener {
 		window = new JFrame("Trivia");
 		question = new JLabel("Q1. This is a sample question"); // represents the question
 		window.add(question);
-		question.setBounds(10, 5, 350, 100);
+		question.setBounds(10, 5, 750, 100);
 		
 
 		options = new JRadioButton[4];
@@ -86,7 +86,7 @@ public class ClientWindow implements ActionListener {
 		window.add(submit);
 
 		window.setSize(400, 400);
-		window.setBounds(50, 50, 400, 400);
+		window.setBounds(50, 50, 800, 400);
 		window.setLayout(null);
 		window.setVisible(true);
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -106,7 +106,7 @@ public class ClientWindow implements ActionListener {
         timer.setText("TIMER");
         clock = new TimerCode(duration); // Create a new TimerTask with the new duration
         t.schedule(clock, 0, 1000); // Schedule the new task
-		polled = true;
+		// polled = true;
     }
 
 	public void setTimer(int duration) {
@@ -135,8 +135,6 @@ public class ClientWindow implements ActionListener {
 				// updateScore(false);
 				client.sendAnswerFeedback("Wrong");
 				JOptionPane.showMessageDialog(window, "Wrong Answer!");
-				poll.setEnabled(false);
-				submit.setEnabled(false);
 				clock.cancel();
 			}
 		}
@@ -229,4 +227,5 @@ public class ClientWindow implements ActionListener {
 			options[i].setEnabled(true);
 		}
 	}
+	
 }
