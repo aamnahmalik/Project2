@@ -69,6 +69,8 @@ public class ClientHandler implements Runnable {
                     } else if ("Next".equals(feedback.trim())) { //for when timer runs out
                         udpThread.removeClients();
                         handleNext();
+                    } else if ("Time's up".equals(feedback.trim())) {
+                        dos.writeUTF("Time's up");
                     }
                 }
             }

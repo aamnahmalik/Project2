@@ -82,6 +82,9 @@ public class Client {
 						case "Wrong":
 							clientWindow.updateScore(false);
 							break;
+						case "Time's up":
+							clientWindow.updateScore(false);
+							clientWindow.updateScore(false);
 	                }
 	            }
 	        } catch (IOException e) {

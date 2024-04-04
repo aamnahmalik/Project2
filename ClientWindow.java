@@ -109,6 +109,13 @@ public class ClientWindow implements ActionListener {
 		polled = true;
     }
 
+	public void setTimer(int duration) {
+        clock.cancel(); // Cancel the previous timer task
+        timer.setText("TIMER");
+        clock = new TimerCode(duration); // Create a new TimerTask with the new duration
+        t.schedule(clock, 0, 1000); // Schedule the new task
+    }
+
 	// this method is called when you check/uncheck any radio button
 	// this method is called when you press either of the buttons- submit/poll
 	@Override
@@ -172,7 +179,8 @@ public class ClientWindow implements ActionListener {
 			if (duration <= 0) {
 				if (polled)
 				{
-					currentScore -= 20;
+					// currentScore -= 20;
+					client.sendAnswerFeedback("Time's up");
 				}
 				poll.setEnabled(false);
 				timer.setText("Timer expired");
@@ -199,7 +207,7 @@ public class ClientWindow implements ActionListener {
 		question.setText(text);
 		poll.setEnabled(true);
 		submit.setEnabled(true);
-		resetTimer(15);
+		setTimer(15);
 	}
 
 	public void setOptions(String[] optionsText, String correctAnswer) {
