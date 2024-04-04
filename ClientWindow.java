@@ -121,11 +121,11 @@ public class ClientWindow implements ActionListener {
 			String selectedOption = getSelectedOptionIndex();
 			submit.setEnabled(false);
 			if (selectedOption != null && selectedOption.equals(answer)) {
-				updateScore(true);
+				// updateScore(true);
 				client.sendAnswerFeedback("Correct");
 				JOptionPane.showMessageDialog(window, "Correct Answer!");
 			} else {
-				updateScore(false);
+				// updateScore(false);
 				client.sendAnswerFeedback("Wrong");
 				JOptionPane.showMessageDialog(window, "Wrong Answer!");
 				poll.setEnabled(false);
@@ -141,7 +141,7 @@ public class ClientWindow implements ActionListener {
 		clientID.setText(id);
     }
 
-	private void updateScore(boolean correct) {
+	public void updateScore(boolean correct) {
 		if (correct) {
 			currentScore += 10; 
 		} else {

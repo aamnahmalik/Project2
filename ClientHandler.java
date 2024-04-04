@@ -56,10 +56,12 @@ public class ClientHandler implements Runnable {
                         System.out.println(receivedID);
                         handleBuzz();
                     } else if ("Correct".equals(feedback.trim())) {
+                        dos.writeUTF("Correct");
                         udpThread.removeClients();
                         System.out.println("sent the notification");
                         handleNext();
                     } else if ("Wrong".equals(feedback.trim())) {
+                        dos.writeUTF("Wrong");
                         //need to put in logic to have next queued player answer
                         // udpThread.removeFirstClient();
                         // receivedID = dis.readUTF();

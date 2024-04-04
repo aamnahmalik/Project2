@@ -76,6 +76,12 @@ public class Client {
 								response = "";
 							}	                        
 							break;
+						case "Correct":
+							clientWindow.updateScore(true);
+							break;
+						case "Wrong":
+							clientWindow.updateScore(false);
+							break;
 	                }
 	            }
 	        } catch (IOException e) {
