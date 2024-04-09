@@ -22,7 +22,7 @@ public class Client {
 	public boolean read = true;
 	private DataInputStream dis;
 	private DataOutputStream dos;
-	public static String usersIP = "127.0.0.1";
+	public static String usersIP = "10.111.148.203";
 
 	public Client(String serverAddress, int serverPort) {
 		this.serverAddress = serverAddress;
