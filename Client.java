@@ -93,7 +93,7 @@ public class Client {
 							clientWindow.clock.cancel();
 							dos.writeInt(clientWindow.currentScore);
 							dos.writeUTF(CLIENT_ID + "'s score: " + clientWindow.currentScore);
-							
+							System.out.println("Your score is " + clientWindow.currentScore);
 							socket.close();
 							break;
 	                }

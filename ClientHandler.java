@@ -100,15 +100,17 @@ public class ClientHandler implements Runnable {
     private void handleNext() throws IOException {
         synchronized (ClientHandler.class) {
             currentQuestionIndex++;
-            if (currentQuestionIndex == 21) {
-                dos.writeUTF("End of game");
-                printScoresAndWinner();
-                return;
+            if (currentQuestionIndex > 20) {  // If all 20 questions have been asked
+                for (ClientHandler handler : handlers) {
+                    handler.dos.writeUTF("End of game");
+                    handler.printScoresAndWinner();  // Notify clients and print scores
+                    // Optionally, close client connections or reset the game state here
+                }
+                return;  // Exit the method to stop the game
             }
-            findAnswer();
+            findAnswer();  // Find the correct answer for the next question
             for (ClientHandler handler : handlers) {
-
-                handler.sendCurrentQuestion();
+                handler.sendCurrentQuestion();  // Send the next question to all clients
             }
         }
     }
